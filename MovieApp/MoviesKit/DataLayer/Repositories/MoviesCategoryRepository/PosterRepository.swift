@@ -15,7 +15,7 @@ protocol PosterRepository {
 struct MDBPosterRepository : PosterRepository {
     let imageDownloader : ImageDownloader
     func getPosterImage(movie : Movie) -> AnyPublisher<Image, Never> {
-        imageDownloader.getImage(path: movie.poster_path ?? "")
+        imageDownloader.getImage(path: movie.poster_path ?? "", size: .small)
             .eraseToAnyPublisher()
     }
     
@@ -24,14 +24,14 @@ struct MDBPosterRepository : PosterRepository {
 
 
 protocol  ImageDownloader {
-    func getImage(  path : String)->AnyPublisher<Image , Never>
+    func getImage(path : String , size : ImageSize) -> AnyPublisher<Image, Never>
 }
 
 struct MDBimageDownloader : ImageDownloader {
     let mDBService : MDBNetworkService
    
-    func getImage(path : String) -> AnyPublisher<Image, Never> {
-        let imageUrl = mDBService.getPosterImageURL(imagePath:path, size: .small)
+    func getImage(path : String , size : ImageSize) -> AnyPublisher<Image, Never> {
+        let imageUrl = mDBService.getPosterImageURL(imagePath:path, size: size)
       return  URLSession.shared.dataTaskPublisher(for: imageUrl)
             .map(\.data)
             .retry(2)

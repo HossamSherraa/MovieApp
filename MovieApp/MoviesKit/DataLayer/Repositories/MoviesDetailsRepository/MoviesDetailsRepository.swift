@@ -38,7 +38,7 @@ struct MDBMovieDetailsRepository : MovieDetailsRepository {
     
     func downloadBackgroundImageAt(path: String) -> AnyPublisher<Image, Never> {
         return imageDownloader
-            .getImage(path: path)
+            .getImage(path: path, size: .medium)
             .eraseToAnyPublisher()
         
     }

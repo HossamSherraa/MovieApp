@@ -24,11 +24,16 @@ struct DetailsView : View {
         ScrollView {
             VStack(spacing:0){
                 ZStack{
-                    detailtViewModel.backgroundImage?
-                        .resizable()
+                    Rectangle()
+                        .overlay( detailtViewModel.backgroundImage?
+                                    .resizable()
+                                    .aspectRatio(contentMode: .fit)
+                        )
+                   
+                        
                         .overlay(  Rectangle()
                                     .opacity(0.5) )
-                        .aspectRatio(contentMode: .fill)
+                        .ignoresSafeArea()
                     
                     
                     
@@ -38,6 +43,8 @@ struct DetailsView : View {
                         Text(detailtViewModel.title)
                             .font(Font.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
+                            .frame(width: 300)
+                            .multilineTextAlignment(.center)
                         
                         Text(detailtViewModel.movieCategory)
                             .font(Font.system(size: 18, weight: .regular, design: .rounded))
