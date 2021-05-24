@@ -17,14 +17,6 @@ struct MovieDetails : Codable{
     var original_title : String
     var runtime : Int
 }
-struct Genre : Codable {
-    let name : String
-}
 
-struct Cast : Codable {
-    let cast : [Actor]
-}
-struct Actor : Codable{
-    let name : String
-    let profile_path : String
-}
+
+

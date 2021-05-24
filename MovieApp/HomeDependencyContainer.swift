@@ -11,9 +11,12 @@ class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory ,
     func getMovieRecommendedViewModel(movieID : String) -> MoviesCategoryViewModel {
         return .init(moviesCategoryRepository: makeMoviesCategoryRepository(), movieViewModelFactory: self ,type: .recommended(movieID: movieID) , mDBService: makeMDBService(), title: "Coming Soon")
     }
+    func makeMovieCastRepository()->MovieCastRepository {
+        MDBMovieCastRepository(service: makeMDBService())
+    }
     
     func getDetailtsViewModel(movie: Movie, moviePoster: Image) -> DetailsViewModel {
-        return DetailsViewModel(movieID: movie.id.description, movieImage: moviePoster, movieDetailsRepository: makeMovieDetailsRepository())
+        return DetailsViewModel(movieID: movie.id.description, movieImage: moviePoster, movieDetailsRepository: makeMovieDetailsRepository(), movieCastRepository: makeMovieCastRepository())
     }
     
     func makeMovieDetailsRepository()->MovieDetailsRepository {

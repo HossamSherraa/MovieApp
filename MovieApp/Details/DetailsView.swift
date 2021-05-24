@@ -121,16 +121,17 @@ struct DetailsView : View {
                     }
                     .padding()
                     VStack(alignment:.leading){
+                        if !detailtViewModel.movieCastViewModel.isEmpty {
                         ScrollView(.horizontal , showsIndicators : false ){
                             HStack(spacing:20){
-                            ForEach(0..<5) { _ in
-                                ActorView()
+                                ForEach(0..<detailtViewModel.movieCastViewModel.count) { index in
+                                    ActorView(viewModel: detailtViewModel.movieCastViewModel[index])
                             }
                                 
                             }
                         }
                         .padding(.leading , 20)
-                        
+                        }
                         Text("Recommendation")
                             .font(.system(size: 24, weight: .bold, design: .rounded))
                             .padding(.horizontal)
@@ -164,33 +165,8 @@ struct DetailsView : View {
     
 }
 
-struct ActorView : View {
-    var body: some View {
-        VStack{
-            Image("0")
-                .resizable()
-                .aspectRatio(contentMode: .fill)
-                .frame(width: 80, height: 80, alignment: .center)
-                .clipShape(Circle())
-            
-            Text("Bre Larson")
-        }
-    }
-}
-struct LabelVertical : View{
-    let systemImage : String
-    let title : String
-    var body: some View {
-        VStack(spacing:8){
-            Image(systemName: systemImage)
-            Text(title)
-    
-        }
-        .frame(width: 75)
-    }
-    
-    
-}
+
+
 
 //struct DetailsView_Preview : PreviewProvider {
 //    static var previews: some View {

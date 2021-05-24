@@ -59,7 +59,7 @@ class MDBNetworkService {
         urlComponents?.path = "/3/movie/\(movieID)/recommendations"
         urlComponents?.queryItems = [URLQueryItem(name: "api_key", value: apiKey)]
         guard let url = urlComponents?.url else {fatalError("Cannot Create URL")}
-        print(url)
+        
         return url
         
     }

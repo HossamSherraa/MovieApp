@@ -10,7 +10,7 @@ import Foundation
 import SwiftUI
 protocol MovieDetailsRepository {
     func fetchMovieDetails(movieID : String)->AnyPublisher<MovieDetails , Never>
-    func fetchMovieCast(movieID : String)->AnyPublisher< [Actor], Never>
+    func fetchMovieCast(movieID : String)->AnyPublisher< [Actor], Error>
     func downloadBackgroundImageAt(path : String)->AnyPublisher<Image , Never>
 }
 
@@ -26,12 +26,12 @@ struct MDBMovieDetailsRepository : MovieDetailsRepository {
             .eraseToAnyPublisher()
     }
     
-    func fetchMovieCast(movieID: String) -> AnyPublisher<[Actor], Never> {
+    func fetchMovieCast(movieID: String) -> AnyPublisher<[Actor], Error> {
         let url = mDBNetworkService.getMovieCastURL(movieID: movieID)
+
         return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
             .decode(type: Cast.self, decoder: JSONDecoder())
-            .replaceError(with: Cast(cast: []))
             .map(\.cast)
             .eraseToAnyPublisher()
     }
