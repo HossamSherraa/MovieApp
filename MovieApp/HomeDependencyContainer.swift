@@ -37,6 +37,8 @@ class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory ,
         MDBMoviesCategoryRepository(mDBService: makeMDBService())
     }
     
+   
+    
     
     
     func makeMoviesPopularCategoryViewModel()->MoviesCategoryViewModel {

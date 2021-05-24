@@ -27,7 +27,7 @@ struct DetailsView : View {
                     Rectangle()
                         .overlay( detailtViewModel.backgroundImage?
                                     .resizable()
-                                    .aspectRatio(contentMode: .fit)
+                                    .aspectRatio(contentMode: .fill)
                         )
                    
                         
@@ -43,7 +43,7 @@ struct DetailsView : View {
                         Text(detailtViewModel.title)
                             .font(Font.system(size: 24, weight: .bold, design: .rounded))
                             .foregroundColor(.white)
-                            .frame(width: 300)
+                            
                             .multilineTextAlignment(.center)
                         
                         Text(detailtViewModel.movieCategory)
@@ -76,7 +76,7 @@ struct DetailsView : View {
                             
                         )
                         
-                        VStack(alignment:.leading, spacing:35){
+                        VStack(alignment:.leading, spacing:25){
                             VStack(alignment:.leading , spacing:10){
                                 Label(detailtViewModel.reviewsTitle, systemImage: "star")
                                     .foregroundColor(.white)
@@ -94,7 +94,7 @@ struct DetailsView : View {
                             }
                         }
                     
-                        .offset(x:10 , y: -22)
+                        .offset(x:10 , y: -10)
                     }.offset(y: -110)
                 
                 }

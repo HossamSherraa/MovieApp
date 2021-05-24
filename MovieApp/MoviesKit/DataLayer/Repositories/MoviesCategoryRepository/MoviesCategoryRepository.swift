@@ -11,10 +11,14 @@ protocol MoviesCategoryRepository{
     func fetchMovies(from url : URL)->AnyPublisher<[Movie] , Error>
 }
 
-struct MDBMoviesCategoryRepository : MoviesCategoryRepository {
+class MDBMoviesCategoryRepository : MoviesCategoryRepository {
+    internal init(mDBService: MDBNetworkService) {
+        self.mDBService = mDBService
+    }
+    
     let mDBService : MDBNetworkService
     
-    func fetchMovies(from url : URL) -> AnyPublisher<[Movie], Error> {
+    func fetchMovies(from url : URL ) -> AnyPublisher<[Movie], Error> {
         
        return URLSession.shared.dataTaskPublisher(for: url)
             .map(\.data)
@@ -25,6 +29,7 @@ struct MDBMoviesCategoryRepository : MoviesCategoryRepository {
         
     }
     
-  
-    
 }
+
+
+
