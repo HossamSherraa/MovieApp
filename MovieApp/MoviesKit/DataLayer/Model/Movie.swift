@@ -10,6 +10,6 @@ struct MoviesResult : Codable {
     let results : [Movie]
 }
 struct Movie : Codable {
-    let poster_path : String
+    let poster_path : String?
     let id : Int
 }

@@ -50,13 +50,8 @@ struct MoviesCategoryView : View {
                 LazyHGrid(rows: [GridItem(.fixed(163))], pinnedViews: [], content: {
                     if !moviesCategoyViewModel.moviesViewModels.isEmpty{
                         ForEach(0..<8) { index in
-                            NavigationLink(
-                                destination: DetailsView.init(detailsViewFactory: self.homeDependencyContainer, movie: moviesCategoyViewModel.moviesViewModels[index].movie, moviePoster: moviesCategoyViewModel.moviesViewModels[index].poster ?? Image("0")),
-                                label: {
-                                    MovieCellView(viewModel: moviesCategoyViewModel.moviesViewModels[index])
-                                    .frame(width: 117.0)
-                                })
-                           
+                            MovieCellView(viewModel: moviesCategoyViewModel.moviesViewModels[index])
+                            .frame(width: 117.0)
                             
                             
                     }
@@ -72,10 +67,7 @@ struct MoviesCategoryView : View {
             
                 
             }
-           
-            
-            
-           
+
             
         }
         .frame(height: isExpended ? 240 : 40 )

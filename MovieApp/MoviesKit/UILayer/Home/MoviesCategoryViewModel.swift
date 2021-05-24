@@ -46,6 +46,7 @@ class MoviesCategoryViewModel : ObservableObject {
             .map({self.movieViewModelFactory.makeMovieModel(movie: $0)})
             .collect()
             .sink(receiveCompletion: {completion in
+                print(completion)
                 print("Did Finished Loading Category Movies" , self.type)
             }) { cellViewModels in
                 self.moviesViewModels = cellViewModels

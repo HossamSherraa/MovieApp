@@ -15,7 +15,7 @@ protocol PosterRepository {
 struct MDBPosterRepository : PosterRepository {
     let imageDownloader : ImageDownloader
     func getPosterImage(movie : Movie) -> AnyPublisher<Image, Never> {
-        imageDownloader.getImage(path: movie.poster_path)
+        imageDownloader.getImage(path: movie.poster_path ?? "")
             .eraseToAnyPublisher()
     }
     

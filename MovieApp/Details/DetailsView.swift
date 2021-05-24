@@ -13,7 +13,7 @@ protocol DetailsViewFactory {
 struct DetailsView : View {
     @StateObject var moviesCategoryViewModel : MoviesCategoryViewModel
     @StateObject var detailtViewModel : DetailsViewModel
-    @State var selectedMovieTag : Int? = nil
+    
     
     init(detailsViewFactory : DetailsViewFactory , movie : Movie , moviePoster : Image) {
         _detailtViewModel = StateObject(wrappedValue: detailsViewFactory.getDetailtsViewModel(movie: movie, moviePoster: moviePoster))
@@ -134,10 +134,7 @@ struct DetailsView : View {
                                         ForEach(0..<moviesCategoryViewModel.moviesViewModels.count) { index in
                                             MovieCellView(viewModel: moviesCategoryViewModel.moviesViewModels[index])
                                             .frame(width: 117.0)
-                                                .onTapGesture {
-                                                    selectedMovieTag = index
-                                                }
-                                            
+                                               
                                     }
                                     }
                                 
