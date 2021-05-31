@@ -11,6 +11,7 @@ import Combine
 class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory , DetailsViewFactory , ObservableObject, FavoritesMoviesRepositoryFactory{
     let favoriteMoviesCache : MoviesCache
     
+    
     init(){
         func makeMoviesCoder()->MoviesCoder{
             FavoriteMoviesCoder()
