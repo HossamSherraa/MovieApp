@@ -17,7 +17,6 @@ class DetailsViewModel : ObservableObject {
         self.movieCastRepository = movieCastRepository
         
         loadMovieDetails()
-        loadCast()
     }
     
     var subscreptions : Set<AnyCancellable> = []
@@ -33,12 +32,20 @@ class DetailsViewModel : ObservableObject {
     @Published var reviewsTitle = ""
     @Published var time : String = ""
     @Published var releasedDate : String = ""
-    
+    @Published var isFavorite : Bool = false
     @Published var overview : String = ""
     
     @Published var movieCastViewModel : [MovieCastViewModel] = []
     
     func loadMovieDetails(){
+      loadMovieDetailsState()
+      loadMovieDetailsData()
+      loadCast()
+        
+        
+    }
+    
+    func loadMovieDetailsData(){
         movieDetailsRepository
             .fetchMovieDetails(movieID: movieID)
             .receive(on: DispatchQueue.main)
@@ -55,7 +62,9 @@ class DetailsViewModel : ObservableObject {
                 
             })
             .store(in: &subscreptions)
-        
+    }
+    func loadMovieDetailsState(){
+       isFavorite =  movieDetailsRepository.isInFavorite(.init(poster_path: nil, id: Int(movieID)!))
         
     }
     
@@ -84,6 +93,12 @@ class DetailsViewModel : ObservableObject {
             .store(in: &subscreptions)
     }
     
+    
+    @objc
+    func toggleFavorite(){
+        isFavorite ? movieDetailsRepository.removeMovieFromFavorite(.init(poster_path: nil, id: Int(movieID)!)): movieDetailsRepository.addMovieToFavorite(.init(poster_path: nil, id: Int(movieID)!))
+        isFavorite.toggle()
+    }
     
     
 }

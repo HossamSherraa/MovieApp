@@ -88,7 +88,10 @@ struct DetailsView : View {
                            
                             HStack{
                                 LabelVertical(systemImage: "bookmark", title: "Watchlist")
-                                LabelVertical(systemImage: "heart", title: "Favourite")
+                                LabelVertical(systemImage: detailtViewModel.isFavorite ? "heart.fill":"heart" , title: "Favourite")
+                                    .onTapGesture {
+                                        detailtViewModel.toggleFavorite()
+                                    }
                                 LabelVertical(systemImage: "square.and.arrow.up", title: "Share")
                                 
                             }

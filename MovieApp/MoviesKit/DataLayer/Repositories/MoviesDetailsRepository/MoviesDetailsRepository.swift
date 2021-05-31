@@ -12,11 +12,15 @@ protocol MovieDetailsRepository {
     func fetchMovieDetails(movieID : String)->AnyPublisher<MovieDetails , Never>
     func fetchMovieCast(movieID : String)->AnyPublisher< [Actor], Error>
     func downloadBackgroundImageAt(path : String)->AnyPublisher<Image , Never>
+    func addMovieToFavorite(_ movie : Movie)
+    func removeMovieFromFavorite(_ movie : Movie)
+    func isInFavorite(_ movie : Movie)->Bool
 }
 
 struct MDBMovieDetailsRepository : MovieDetailsRepository {
     let mDBNetworkService : MDBNetworkService
     let imageDownloader : ImageDownloader
+    let movieCache : MoviesCache
     func fetchMovieDetails(movieID: String) -> AnyPublisher<MovieDetails, Never> {
         let url = mDBNetworkService.getMovieDetailsURL(movieID: movieID)
        return URLSession.shared.dataTaskPublisher(for: url)
@@ -42,6 +46,22 @@ struct MDBMovieDetailsRepository : MovieDetailsRepository {
             .eraseToAnyPublisher()
         
     }
+    
+    func addMovieToFavorite(_ movie: Movie) {
+       let _ =  movieCache.saveMovieToFavorite(movie: movie)
+            .sink(receiveCompletion: {_ in }) { (com) in }
+           
+    }
+    
+    func removeMovieFromFavorite( _ movie: Movie) {
+        movieCache.removeFavortieMovie(movie: movie)
+    }
+    
+    func isInFavorite(_ movie: Movie) -> Bool {
+        movieCache.isExist(movie)
+    }
+    
+    
     
     
 }

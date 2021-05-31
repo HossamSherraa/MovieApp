@@ -7,7 +7,30 @@
 
 import Foundation
 import SwiftUI
-class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory , DetailsViewFactory , ObservableObject{
+import Combine
+class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory , DetailsViewFactory , ObservableObject, FavoritesMoviesRepositoryFactory{
+    let favoriteMoviesCache : MoviesCache
+    
+    init(){
+        func makeMoviesCoder()->MoviesCoder{
+            FavoriteMoviesCoder()
+        }
+        func makeMoviesCache()->MoviesCache {
+            MoviesCacheUserDefaults(moviesCoder: makeMoviesCoder())
+        }
+        favoriteMoviesCache = makeMoviesCache()
+    }
+    func getViewModel(movie: Movie, didRemoveNotifier: PassthroughSubject<Movie, Never>) -> FavoriteMovieRowViewModel {
+        FavoriteMovieRowViewModel(movie: movie, movieDetailsRepository: makeMovieDetailsRepository(), didRemoveNotifier: didRemoveNotifier)
+    }
+    
+    func makeFavoritesMoviesRepository()->FavoritesMoviesRepository {
+        return MDBFavoriteMoviesRepository(favoritesMoviesRepositoryFactory: self, moviesCache: favoriteMoviesCache)
+    }
+    func makeFavoritesMoviesViewModel() -> FavoritesMoviesViewModel {
+        FavoritesMoviesViewModel(favoriteMoviesRepository: makeFavoritesMoviesRepository())
+    }
+    
     func getMovieRecommendedViewModel(movieID : String) -> MoviesCategoryViewModel {
         return .init(moviesCategoryRepository: makeMoviesCategoryRepository(), movieViewModelFactory: self ,type: .recommended(movieID: movieID) , mDBService: makeMDBService(), title: "Coming Soon")
     }
@@ -19,8 +42,9 @@ class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory ,
         return DetailsViewModel(movieID: movie.id.description, movieImage: moviePoster, movieDetailsRepository: makeMovieDetailsRepository(), movieCastRepository: makeMovieCastRepository())
     }
     
+    
     func makeMovieDetailsRepository()->MovieDetailsRepository {
-        return MDBMovieDetailsRepository(mDBNetworkService: makeMDBService(), imageDownloader: makeImageDownloader())
+        return MDBMovieDetailsRepository(mDBNetworkService: makeMDBService(), imageDownloader: makeImageDownloader(), movieCache: favoriteMoviesCache)
     }
     
     func makeImageDownloader()->ImageDownloader {

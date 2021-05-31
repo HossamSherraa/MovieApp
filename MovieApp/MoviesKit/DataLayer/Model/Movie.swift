@@ -13,3 +13,7 @@ struct Movie : Codable {
     let poster_path : String?
     let id : Int
 }
+
+extension Movie : Equatable {
+    
+}
