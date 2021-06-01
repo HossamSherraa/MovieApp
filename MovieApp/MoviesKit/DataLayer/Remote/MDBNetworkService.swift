@@ -85,6 +85,17 @@ class MDBNetworkService {
 
     }
     
+    func getMovieVideo(movieID : String)->URL{
+        //https://api.themoviedb.org/3/movie/{movie_id}/videos?api_key=<<api_key>>&language=en-US
+        
+        var urlComponents = URLComponents(string: baseURL)
+        urlComponents?.path = "/3/movie/\(movieID)/videos"
+        urlComponents?.queryItems = [URLQueryItem(name: "api_key", value: apiKey)]
+        guard let url = urlComponents?.url else {fatalError("Cannot Create URL")}
+        return url
+        
+    }
+    
     
     
 }

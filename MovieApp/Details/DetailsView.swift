@@ -67,6 +67,23 @@ struct DetailsView : View {
                             .resizable()
                             .aspectRatio(contentMode: .fill)
                             .frame(width: 115, height: 180)
+                            .overlay(
+                                ZStack{
+                                    if  detailtViewModel.isVideoAvailable {
+                                    Button(action: {
+                                        detailtViewModel.onPressPlay()
+                                    }, label: {
+                                            Image(systemName: "play.rectangle.fill")
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fit)
+                                                .frame(width: 60, height: 60, alignment: .center)
+                                                .foregroundColor(.yellow)
+                                                .opacity(0.9)
+                                        
+                                    } )
+                                    }
+                                }
+                                )
                            
                             .clipShape(RoundedRectangle(cornerRadius: 10.0, style: .continuous))
                             .overlay(

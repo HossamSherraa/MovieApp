@@ -15,12 +15,17 @@ protocol MovieDetailsRepository {
     func addMovieToFavorite(_ movie : Movie)
     func removeMovieFromFavorite(_ movie : Movie)
     func isInFavorite(_ movie : Movie)->Bool
+    func loadMovieVideo(movieID : String)->AnyPublisher<Video , Never>
+    func openVideo(key : String)
+    
 }
 
 struct MDBMovieDetailsRepository : MovieDetailsRepository {
+    
     let mDBNetworkService : MDBNetworkService
     let imageDownloader : ImageDownloader
     let movieCache : MoviesCache
+    let youtubeLoader : YouTubeLoader
     func fetchMovieDetails(movieID: String) -> AnyPublisher<MovieDetails, Never> {
         let url = mDBNetworkService.getMovieDetailsURL(movieID: movieID)
        return URLSession.shared.dataTaskPublisher(for: url)
@@ -61,7 +66,43 @@ struct MDBMovieDetailsRepository : MovieDetailsRepository {
         movieCache.isExist(movie)
     }
     
+    func loadMovieVideo(movieID : String) -> AnyPublisher<Video, Never> {
+        let url = mDBNetworkService.getMovieVideo(movieID: movieID)
+        return URLSession.shared
+            .dataTaskPublisher(for: url)
+            .map(\.data)
+            .decode(type: VideoResult.self, decoder: JSONDecoder())
+            .replaceError(with: .init(results: []))
+            .compactMap({$0.results.first { $0.site == "YouTube"}})
+            .receive(on: DispatchQueue.main)
+            .eraseToAnyPublisher()
+    }
     
+    
+    func openVideo(key : String){
+        youtubeLoader.openYoutubeVideo(key: key)
+    }
+    
+    
+    
+    
+}
+
+protocol YouTubeLoader {
+    func openYoutubeVideo(key : String)
+}
+
+struct MDBYoutubeLoader : YouTubeLoader {
+    func openYoutubeVideo(key: String) {
+        if let youtubeURL = URL(string: "youtube://\(key)"),
+               UIApplication.shared.canOpenURL(youtubeURL) {
+               // redirect to app
+               UIApplication.shared.open(youtubeURL, options: [:], completionHandler: nil)
+           } else if let youtubeURL = URL(string: "https://www.youtube.com/watch?v=\(key)") {
+               // redirect through safari
+               UIApplication.shared.open(youtubeURL, options: [:], completionHandler: nil)
+           }
+    }
     
     
 }

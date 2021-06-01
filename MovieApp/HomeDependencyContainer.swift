@@ -9,18 +9,18 @@ import Foundation
 import SwiftUI
 import Combine
 class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory , DetailsViewFactory , ObservableObject, FavoritesMoviesRepositoryFactory{
-    let favoriteMoviesCache : MoviesCache
-    
-    
-    init(){
+    lazy var favoriteMoviesCache : MoviesCache = {
         func makeMoviesCoder()->MoviesCoder{
             FavoriteMoviesCoder()
         }
         func makeMoviesCache()->MoviesCache {
             MoviesCacheUserDefaults(moviesCoder: makeMoviesCoder())
         }
-        favoriteMoviesCache = makeMoviesCache()
-    }
+        return makeMoviesCache()
+    }()
+    
+    
+    
     func getViewModel(movie: Movie, didRemoveNotifier: PassthroughSubject<Movie, Never>) -> FavoriteMovieRowViewModel {
         FavoriteMovieRowViewModel(movie: movie, movieDetailsRepository: makeMovieDetailsRepository(), didRemoveNotifier: didRemoveNotifier)
     }
@@ -43,9 +43,12 @@ class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory ,
         return DetailsViewModel(movieID: movie.id.description, movieImage: moviePoster, movieDetailsRepository: makeMovieDetailsRepository(), movieCastRepository: makeMovieCastRepository())
     }
     
+    func makeYoutubeLoader()->YouTubeLoader{
+        MDBYoutubeLoader()
+    }
     
     func makeMovieDetailsRepository()->MovieDetailsRepository {
-        return MDBMovieDetailsRepository(mDBNetworkService: makeMDBService(), imageDownloader: makeImageDownloader(), movieCache: favoriteMoviesCache)
+        return MDBMovieDetailsRepository(mDBNetworkService: makeMDBService(), imageDownloader: makeImageDownloader(), movieCache: favoriteMoviesCache, youtubeLoader: makeYoutubeLoader())
     }
     
     func makeImageDownloader()->ImageDownloader {

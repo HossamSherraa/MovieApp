@@ -34,13 +34,17 @@ class DetailsViewModel : ObservableObject {
     @Published var releasedDate : String = ""
     @Published var isFavorite : Bool = false
     @Published var overview : String = ""
-    
+    @Published var isVideoAvailable : Bool = false
+
     @Published var movieCastViewModel : [MovieCastViewModel] = []
+    
+    var videoKey : String?
     
     func loadMovieDetails(){
       loadMovieDetailsState()
       loadMovieDetailsData()
       loadCast()
+      loadVideoStatus()
         
         
     }
@@ -62,10 +66,20 @@ class DetailsViewModel : ObservableObject {
                 
             })
             .store(in: &subscreptions)
+        
+        
+        movieDetailsRepository
+            .loadMovieVideo(movieID: movieID)
+            .print()
+            .sink { (video) in
+                
+            }
+            .store(in: &subscreptions)
+        
+        
     }
     func loadMovieDetailsState(){
        isFavorite =  movieDetailsRepository.isInFavorite(.init(poster_path: nil, id: Int(movieID)!))
-        
     }
     
     func loadBackgroundImage(imagePath : String){
@@ -93,13 +107,30 @@ class DetailsViewModel : ObservableObject {
             .store(in: &subscreptions)
     }
     
+    func loadVideoStatus(){
+        movieDetailsRepository
+            .loadMovieVideo(movieID: movieID)
+            
+            .sink { [weak self] video in
+                self?.videoKey = video.key
+                self?.isVideoAvailable = true
+            }.store(in: &subscreptions)
+    }
     
-    @objc
+    
     func toggleFavorite(){
         isFavorite ? movieDetailsRepository.removeMovieFromFavorite(.init(poster_path: nil, id: Int(movieID)!)): movieDetailsRepository.addMovieToFavorite(.init(poster_path: nil, id: Int(movieID)!))
         isFavorite.toggle()
     }
     
+    
+    func onPressPlay(){
+        if let videoKey = videoKey {
+        movieDetailsRepository
+            .openVideo(key: videoKey )
+            
+        }
+    }
     
 }
 
