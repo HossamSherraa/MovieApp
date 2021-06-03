@@ -10,7 +10,6 @@ struct MoviesCategoryView : View {
     @EnvironmentObject var homeDependencyContainer : HomeDependencyContainer
     @StateObject var moviesCategoyViewModel : MoviesCategoryViewModel
     
-    @State var isShowAll : Bool = false
     @State var isExpended = true
     var body: some View {
         VStack{
@@ -23,7 +22,7 @@ struct MoviesCategoryView : View {
                 Spacer()
                 
                 NavigationLink(destination:
-                                ShowAllView(categoryViewModel: moviesCategoyViewModel, isShowAll: $isShowAll), isActive: $isShowAll, label: {
+                                ShowAllView(categoryViewModel: moviesCategoyViewModel), label: {
                     Text("Show All")
                         .font(.system(size: 17 , weight: .bold, design: .rounded))
                         .offset(x: -20)
@@ -51,6 +50,15 @@ struct MoviesCategoryView : View {
                     if !moviesCategoyViewModel.moviesViewModels.isEmpty{
                         ForEach(0..<8) { index in
                             MovieCellView(viewModel: moviesCategoyViewModel.moviesViewModels[index])
+                            .frame(width: 117.0)
+                            
+                            
+                    }
+                    }else{
+                        ForEach(0..<8) { index in
+                            RoundedRectangle(cornerRadius: 10)
+                                .foregroundColor(.blue)
+                                .opacity(0.2)
                             .frame(width: 117.0)
                             
                             

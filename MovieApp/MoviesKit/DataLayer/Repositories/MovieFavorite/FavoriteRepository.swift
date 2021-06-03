@@ -101,7 +101,6 @@ class MoviesCacheUserDefaults : MoviesCache  {
         .flatMap({self.moviesCoder.encodeMovie($0)})
         .tryMap { codedMovie -> Bool in
             self.updateSavedData(newDic: codedMovie, movieID: movie.id.description)
-            print("Saved")
             return true
         }
         .eraseToAnyPublisher()
@@ -115,7 +114,6 @@ class MoviesCacheUserDefaults : MoviesCache  {
     }
      func loadSavedData(){
         savedData =  userDafaults.dictionary(forKey: wrapperName) ?? [:]
-        print(savedData)
     }
     
     func removeFavortieMovie(movie : Movie){

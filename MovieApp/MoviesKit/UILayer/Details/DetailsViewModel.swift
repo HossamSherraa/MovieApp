@@ -70,7 +70,6 @@ class DetailsViewModel : ObservableObject {
         
         movieDetailsRepository
             .loadMovieVideo(movieID: movieID)
-            .print()
             .sink { (video) in
                 
             }

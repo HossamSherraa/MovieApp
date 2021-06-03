@@ -14,10 +14,19 @@ struct MovieCellView : View {
         NavigationLink(
             destination: DetailsView(detailsViewFactory: homeDependencyContainer, movie: viewModel.movie, moviePoster: viewModel.poster ?? Image("0")),
             label: {
-                viewModel.poster?
-                    .resizable()
-                    .clipped()
-                    .clipShape( RoundedRectangle(cornerRadius: 10))
+                if viewModel.poster != nil {
+                    viewModel.poster?
+                        .resizable()
+                        .clipped()
+                        .clipShape( RoundedRectangle(cornerRadius: 10))
+                       
+                }else {
+                    Image("0")
+                        .resizable()
+                        .clipped()
+                        .clipShape( RoundedRectangle(cornerRadius: 10))
+                        .redacted(reason: .placeholder)
+                }
             })
               
                     

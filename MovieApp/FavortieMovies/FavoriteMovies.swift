@@ -15,7 +15,9 @@ struct FavoriteMovies: View {
             ScrollView{
                 LazyVStack(spacing:20){
                     ForEach.init(favoritesMoviesViewModel.favoritesMovies, id: \.movie.id) { element in
-                        FavoriteMovieRow(favoriteMovieRowViewModel: element)
+                            FavoriteMovieRow(favoriteMovieRowViewModel: element)
+                                .transition(AnyTransition.slide)
+                            
                     }
                        
             }
@@ -52,7 +54,9 @@ struct FavoriteMovieRow : View {
                 Image(systemName: "heart.fill")
                     .foregroundColor(Color(#colorLiteral(red: 0.8078431487, green: 0.02745098062, blue: 0.3333333433, alpha: 1)))
                     .onTapGesture {
-                        favoriteMovieRowViewModel.onPressremoveFromFavorite()
+                        withAnimation {
+                            favoriteMovieRowViewModel.onPressremoveFromFavorite()
+                        }
                     }
             }
             .padding()
