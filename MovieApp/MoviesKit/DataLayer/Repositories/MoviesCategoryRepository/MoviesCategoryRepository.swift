@@ -24,6 +24,7 @@ class MDBMoviesCategoryRepository : MoviesCategoryRepository {
             .map(\.data)
             .decode(type: MoviesResult.self, decoder: JSONDecoder())
         .map(\.results)
+        .print()
         .receive(on: DispatchQueue.main)
             .eraseToAnyPublisher()
         

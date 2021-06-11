@@ -27,13 +27,11 @@ struct DetailsView : View {
                     Rectangle()
                         .overlay( detailtViewModel.backgroundImage?
                                     .resizable()
-                                    .aspectRatio(contentMode: .fill)
+                                    .aspectRatio(contentMode: .fit)
                         )
                    
                         
-                        .overlay(  Rectangle()
-                                    .opacity(0.5) )
-                        .ignoresSafeArea()
+                        
                     
                     
                     
@@ -183,6 +181,14 @@ struct DetailsView : View {
         
     }
     
+}
+
+struct previewMEEE : PreviewProvider {
+    static let dependencyContainer = HomeDependencyContainer()
+    static var previews: some View {
+        DetailsView(detailsViewFactory: dependencyContainer, movie: .init(poster_path: "/eQlEajrYVXjstXgvAjwRnQ3LU1s.jpg", id: 337404), moviePoster: Image("0"))
+            
+    }
 }
 
 
