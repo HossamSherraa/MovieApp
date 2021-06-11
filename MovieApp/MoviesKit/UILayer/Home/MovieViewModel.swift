@@ -9,6 +9,7 @@ import Foundation
 import Combine
 import SwiftUI
 class MovieViewModel : ObservableObject {
+    //SomeCommitFromB1
     internal init(movie: Movie, posterRepository: PosterRepository) {
         self.movie = movie
         self.posterRepository = posterRepository
