@@ -9,7 +9,6 @@ import SwiftUI
 
 @main
 struct MovieAppApp: App {
-    //Main
     var body: some Scene {
         WindowGroup {
             let dependencyContainer = HomeDependencyContainer()
