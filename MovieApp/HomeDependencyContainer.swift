@@ -9,7 +9,7 @@ import Foundation
 import SwiftUI
 import Combine
 class HomeDependencyContainer  : MovieViewModelFactory , MobiesCategoryFactory , DetailsViewFactory , ObservableObject, FavoritesMoviesRepositoryFactory{
-    //ommint HereRTW
+    //ommint
     lazy var favoriteMoviesCache : MoviesCache = {
         func makeMoviesCoder()->MoviesCoder{
             FavoriteMoviesCoder()
