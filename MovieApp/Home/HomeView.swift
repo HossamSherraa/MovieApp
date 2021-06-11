@@ -54,13 +54,6 @@ struct HomeView: View {
                 }
                 .navigationBarHidden(true)
             }
-            if #available(iOS 15.0, *) {
-                Text("Blue Me ")
-                    .frame(minWidth: 200, idealWidth: .infinity, maxWidth: .infinity , minHeight: 40)
-                    .background(.thinMaterial, in: RoundedRectangle(cornerRadius: 10))
-            } else {
-                // Fallback on earlier versions
-            }
         }
     }
 }
