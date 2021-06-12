@@ -21,7 +21,7 @@ struct DetailsView : View {
         
     }
     var body: some View {
-    Text("FDD")
+    Text("FRTTTD")
     }
     
 }
