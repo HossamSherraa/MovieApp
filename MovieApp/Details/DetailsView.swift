@@ -21,10 +21,7 @@ struct DetailsView : View {
         
     }
     var body: some View {
-        ScrollView {}
-        .ignoresSafeArea()
-        .padding(.bottom , -160)
-        
+    Text("F")
     }
     
 }
